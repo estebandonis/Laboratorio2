@@ -1,15 +1,26 @@
+/**
+ * Esta clase se encarga de pregutarle al usuario
+ */
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Vista {
     private Scanner scan = new Scanner(System.in);
 
+    /**
+     * Este metodo le da la bienvenida al sistema
+     */
     public void bienvenida(){
         System.out.println("Bienvenid@ a nuestro programa de asistencia a caninos perdidos");
     }
 
+    /**
+     * Este metodo le despliega el menu al usuario
+     * @return option
+     */
     public int menu(){
-        boolean paso = false;
+        boolean paso = false;//Lo usamos como bandera para saber si el usuario ingreso bien lo que le pedimos
         int option = 0;
         while (paso != true){
             try {
@@ -35,6 +46,10 @@ public class Vista {
         return option;//regresamos el valor convertido
     }
 
+    /**
+     * Este metodo se encarga de pedir el tipo de RAM que el usuario quiere
+     * @return datoInt
+     */
     public int tipoRAM(){
         boolean paso = false;
         int datoInt = 0;
@@ -43,7 +58,7 @@ public class Vista {
                 System.out.println("Elige un tipo de RAM con un numero ['1' para SDR] o ['2' para DDR]");
                 String dato = scan.nextLine();
                 datoInt = Integer.parseInt(dato);
-                if (datoInt == 1 || datoInt == 2){
+                if (datoInt == 1 || datoInt == 2){//Ponemos una condicion para que solo pueda ingresar esos dos valores
                     paso = true;
                 }
                 else{
@@ -56,6 +71,10 @@ public class Vista {
         return datoInt;
     }
 
+    /**
+     * Este metodo obtiene la cantidad de SDR que el usuario quiera y este entre las opciones
+     * @return cantidadInt
+     */
     public int obtenerCantidadSDR(){
         boolean paso = false;
         int cantidadInt = 0;
@@ -77,6 +96,10 @@ public class Vista {
         return cantidadInt;
     }
 
+    /**
+     * Este metodo le pregunta al usuario si desea agregar programas
+     * @return respuesta
+     */
     public String deseaAgregarProgramas(){
         boolean paso = false;
         String respuesta = "";
@@ -92,6 +115,10 @@ public class Vista {
         return respuesta;
     }
 
+    /**
+     * Este metodo le pide al usuario la cantidad de programas que planea agregar
+     * @return cantidadInt
+     */
     public int cantidadProgramas(){
         boolean paso = false;
         int cantidadInt = 0;
@@ -108,6 +135,11 @@ public class Vista {
         return cantidadInt;
     }
 
+    /**
+     * Este programa sirve para mandar al sistema el programa a agregar
+     * @param programas nos sirve para almacenar el programa
+     * @return program
+     */
     public Programa agregarPrograma(ArrayList<Programa> programas){
         Programa program = new Programa();
         boolean paso = false;
@@ -115,10 +147,10 @@ public class Vista {
             try {
                 System.out.println("¿Cual es el programa a elegir?");
                 String nombre = scan.nextLine().toUpperCase();
-                for (int i = 0; i < programas.size(); i++){
+                for (int i = 0; i < programas.size(); i++){//Buscamos para ver si el programa si se encuentra en nuestro registro de programas
                     Programa programa = programas.get(i);
                     String nombrePrograma = programa.getNombre();
-                    if (nombre.equals(nombrePrograma)){
+                    if (nombre.equals(nombrePrograma)){//Si si esta, lo mandamos al sistema
                         program = programa;
                         paso = true;
                         break;
@@ -134,6 +166,10 @@ public class Vista {
         return program;
     }
 
+    /**
+     * Este metodo imprime todo los programas 
+     * @param programas nos devuelve el array con programas para imprimir al usuario
+     */
     public void imprimirProgramas(ArrayList<Programa> programas){
         for (int i = 0; i < programas.size(); i++){
             Programa program = programas.get(i);
@@ -145,6 +181,10 @@ public class Vista {
         }
     }
 
+    /**
+     * Este metodo imprime todos los programas de la RAM
+     * @param RAM array que contiene los programas por bloques
+     */
     public void imprimirRAM(ArrayList<Bloque> RAM){
         for (int i = 0; i < RAM.size(); i++){
             Bloque block =  RAM.get(i);
@@ -164,6 +204,10 @@ public class Vista {
         }
     }
 
+    /**
+     * Este metodo sirve para imprimir todos los programas que se encuentran en ejecucion
+     * @param RAM array con todos los programas que se encuentran en la RAM
+     */
     public void programasEnEjecucion(ArrayList<Bloque> RAM){
         for (int i = 0; i < RAM.size(); i++){
             Bloque block =  RAM.get(i);
@@ -178,6 +222,10 @@ public class Vista {
         }
     }
 
+    /**
+     * Este metodo nos muestra los programas que se encuentran en la cola
+     * @param programas es un array con todos los programas en la cola
+     */
     public void programasEnCola(ArrayList<Programa> programas){
         for (int i = 0; i < programas.size(); i++){
             Programa program =  programas.get(i);
@@ -189,6 +237,11 @@ public class Vista {
         }
     }
 
+    /**
+     * Este metodo nos sirve para pedirle al usuario el programa que necesita buscar
+     * @param programas nos devuelve un array de programas donde buscar
+     * @return program
+     */
     public Programa programaABuscar(ArrayList<Programa> programas){
         Programa program = new Programa();
         boolean paso = false;
@@ -196,7 +249,7 @@ public class Vista {
             try {
                 System.out.println("¿Que programa desea buscar?");
                 String nombre = scan.nextLine().toUpperCase();
-                for (int i = 0; i < programas.size(); i++){
+                for (int i = 0; i < programas.size(); i++){//recorremos el array para revisar si encontramos el programa a buscar
                     Programa programa = programas.get(i);
                     String nombrePrograma = programa.getNombre();
                     if (nombre.equals(nombrePrograma)){
@@ -216,6 +269,11 @@ public class Vista {
         return program;
     }
 
+    /**
+     * Este metodo nos sirve para mostrar todos los bloques donde un programa en especifico ocupa un espacio en la ram
+     * @param RAM array con los programas que estan en uso
+     * @param programaABuscar programa a buscar en el array
+     */
     public void espaciosDePrograma(ArrayList<Bloque> RAM, Programa programaABuscar){
         for (int i = 0; i < RAM.size(); i++){
             Bloque block =  RAM.get(i);
@@ -232,14 +290,25 @@ public class Vista {
         }
     }
 
+    /**
+     * Nos sirve para mostrar la cantidad de ram total que poseemos
+     * @param cantidad cantidad de ram total disponible
+     */
     public void imprimirCantidadRAMTotal(int cantidad){
         System.out.println("La cantidad de RAM total es de: " + cantidad + " GB");
     }
 
+    /**
+     * Nos sirve para mostrar la cantidad de ram disponible que poseemos
+     * @param cantidad cantidad de ram disponible
+     */
     public void imprimirCantidadRAMDisponible(int cantidad){
         System.out.println("La cantidad de RAM disponible es de: " + cantidad + " GB");
     }
-
+    /**
+     * Nos sirve para mostrar la cantidad de ram en uso que poseemos
+     * @param cantidad cantidad de ram en uso
+     */
     public void imprimirCantidadRAMUso(int cantidad){
         System.out.println("La cantidad de RAM en uso es de: " + cantidad + " GB");
     }

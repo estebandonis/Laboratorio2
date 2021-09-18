@@ -1,21 +1,29 @@
+/**
+ * Programa principal
+ */
+
 import java.util.ArrayList;
 
 public class Controlador {
+    /**
+     * Programa principal donde se ejecutaran las acciones
+     * @param args parametros
+     */
     public static void main(String[] args) {
         Modelo model = new Modelo();
         Vista vista = new Vista();
-        ArrayList<Programa> programas = model.obtenerDatos();
-        int opcion;
+        ArrayList<Programa> programas = model.obtenerDatos();//base de datos de todos los programas 
+        int opcion = 0;
         String tipoRAM; 
         int cantidad;
         
-        vista.bienvenida();
-        int numRAM = vista.tipoRAM();
-        if (numRAM == 1){
-            tipoRAM = "SDR";
-            cantidad = vista.obtenerCantidadSDR();
-            int cantidadBloques = model.convertirGBBloques(cantidad);
-            model.crearRAM(cantidadBloques);
+        vista.bienvenida();//Damos la bienvenida
+        int numRAM = vista.tipoRAM();//Obtenemos el tipo de ram en numero 
+        if (numRAM == 1){//deciframos que tipo de ram quiere el usuario
+            tipoRAM = "SDR";//Definimos el tipo de ram
+            cantidad = vista.obtenerCantidadSDR();//Preguntamos la cantidad
+            int cantidadBloques = model.convertirGBBloques(cantidad);//convertimos la cantidad
+            model.crearRAM(cantidadBloques);//creamos la ram con la cantidad de bloques que tenemos
         }
         else{
             tipoRAM = "DDR";
@@ -24,23 +32,21 @@ public class Controlador {
             model.crearRAM(cantidadBloques);
         }
 
-        String respuesta = vista.deseaAgregarProgramas();
-        if (respuesta.equals("si")){
-            int cantidadProgramas = vista.cantidadProgramas();
-            vista.imprimirProgramas(programas);
-            for (int i = 0; i < cantidadProgramas; i++){
+        String respuesta = vista.deseaAgregarProgramas();//preguntamos si quiere agregar algun programa a la ram
+        if (respuesta.equals("si")){//si es asi...
+            int cantidadProgramas = vista.cantidadProgramas();//Le pedimos la cantidad de programas a agregar
+            vista.imprimirProgramas(programas);//Imprimimos los programas a agregar
+            for (int i = 0; i < cantidadProgramas; i++){//Agregarmos los programas
                 Programa program = vista.agregarPrograma(programas);
                 model.agregarPrograma(program);
             }
         }
 
-        opcion = vista.menu();
-
         while (opcion != 10){
-            opcion = vista.menu();
+            opcion = vista.menu();//desplegamos el menu para pedir la opcion del usuario
 
             if (opcion == 1){
-                int cantidadProgramas = vista.cantidadProgramas();
+                int cantidadProgramas = vista.cantidadProgramas();//Agregamos los programas que nos pide al usuario a la cola
                 vista.imprimirProgramas(programas);
                 for (int i = 0; i < cantidadProgramas; i++){
                     Programa program = vista.agregarPrograma(programas);
@@ -48,32 +54,32 @@ public class Controlador {
                 }
             }
             else if (opcion == 2){
-                vista.imprimirCantidadRAMTotal(cantidad);
+                vista.imprimirCantidadRAMTotal(cantidad);//imprimimos la cantidad de ram total
             }
             else if (opcion == 3){
-                vista.imprimirCantidadRAMDisponible(model.convertirBloquesGB(model.totalRAMDisponible()));
+                vista.imprimirCantidadRAMDisponible(model.convertirBloquesGB(model.totalRAMDisponible()));//imprimimos la cantidad de ram disponible
             }
             else if (opcion == 4){
-                vista.imprimirCantidadRAMUso(model.convertirBloquesGB(model.totaRAMUso()));
+                vista.imprimirCantidadRAMUso(model.convertirBloquesGB(model.totaRAMUso()));//imprimimos la cantidad de ram en uso
             }
             else if (opcion == 5){
-                vista.programasEnEjecucion(model.getRAM());
+                vista.programasEnEjecucion(model.getRAM());//imprimos los programas en ejecucion
             }
             else if (opcion == 6){
-                vista.programasEnCola(model.getCola());
+                vista.programasEnCola(model.getCola());//Imprimimos los programas en cola
             }
             else if (opcion == 7){
-                Programa programaABuscar = vista.programaABuscar(programas);
-                vista.espaciosDePrograma(model.getRAM(), programaABuscar);
+                Programa programaABuscar = vista.programaABuscar(programas);//Obtenemos el programa que busca el usuario
+                vista.espaciosDePrograma(model.getRAM(), programaABuscar);//Obtenemos y mostramos los espacios que ocupa dicho programa
             }
             else if (opcion == 8){
-                vista.imprimirRAM(model.getRAM());
+                vista.imprimirRAM(model.getRAM());//imprimimos los bloque sde la ram
             }
             else if (opcion == 9){
-                if (tipoRAM.equals("SDR")){
+                if (tipoRAM.equals("SDR")){//realizamos un ciclo de reloj, dependiendo si era sdr
                     model.cicloRelojSDR();
                 }
-                else {
+                else {//realizamos un ciclo de reloj, dependiendo si era ddr
                     model.cicloRelojDDR();
                 }
             }
